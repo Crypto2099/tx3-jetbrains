@@ -54,6 +54,13 @@ java {
 }
 
 tasks {
+    // buildSearchableOptions spins up a full headless IDE to index plugin settings
+    // for the Settings search bar. It frequently fails due to sandbox environment
+    // issues unrelated to plugin code and is not critical for a language plugin.
+    buildSearchableOptions {
+        enabled = false
+    }
+
     // Fix: IntelliJ platform and our resources both contribute colorscheme XMLs;
     // keep ours and silently drop duplicates from the platform side.
     processResources {
@@ -76,6 +83,14 @@ tasks {
             <ul>
               <li>Fixed ClassCastException crash when disabling/enabling the plugin in a live session by switching to NoSettings, eliminating classloader serialization entirely</li>
               <li>Fixed plugin icon invisible on light IDE themes; added pluginIcon_dark.svg for dark themes</li>
+              <li>Replaced deprecated getDefaultCommonSettings() with customizeDefaults(); removed unused Tx3CodeStyleSettings class</li>
+            </ul>
+            <h3>Added in 1.0.3</h3>
+            <ul>
+              <li>Code folding for type declarations, env blocks, and locals blocks</li>
+              <li>Code folding for inline record literals with 2 or more fields</li>
+              <li>Code folding for variant construction expressions (TypeName::CaseName { … }) with 2 or more fields</li>
+              <li>Dynamic plugin loading — installing and updating no longer requires an IDE restart</li>
             </ul>
             <h3>1.0.2</h3>
             <ul>

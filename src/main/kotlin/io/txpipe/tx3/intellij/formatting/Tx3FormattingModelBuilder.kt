@@ -3,6 +3,7 @@ package io.txpipe.tx3.intellij.formatting
 import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
 import com.intellij.psi.codeStyle.CodeStyleSettings
+import com.intellij.psi.codeStyle.CommonCodeStyleSettings
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider
 import com.intellij.psi.formatter.common.AbstractBlock
 import io.txpipe.tx3.intellij.Tx3Language
@@ -194,8 +195,8 @@ private class Tx3Block(
     override fun getSpacing(child1: Block?, child2: Block): Spacing? {
         val t1 = (child1 as? Tx3Block)?.node?.elementType
         val t2 = (child2 as? Tx3Block)?.node?.elementType
-        // Suppress spaces around < > ONLY when both neighbours are type-system tokens.
-        // This covers List<Int>, Map<K,V> while leaving 1 < 2 untouched.
+        // Suppress spaces around < > ONLY when both neighbors are type-system tokens.
+        // This covers List<Int>, Map<K, V> while leaving 1 < 2 untouched.
         if ((t1 == Tx3TokenTypes.OP_LT || t2 == Tx3TokenTypes.OP_GT || t2 == Tx3TokenTypes.OP_LT) &&
             isTypeContext(t1, t2)) {
             return Spacing.createSpacing(0, 0, 0, false, 0)
@@ -214,7 +215,7 @@ private class Tx3Block(
             Tx3ElementTypes.TYPE_REF, Tx3ElementTypes.LIST_TYPE,
             Tx3ElementTypes.MAP_TYPE, Tx3ElementTypes.GENERIC_TYPE,
         )
-        // At least one neighbour must be an actual type token (not < > or comma themselves)
+        // At least one neighbor must be an actual type token (not < > or comma themselves)
         // so that comparison operators like 1 < 2 don't get their spaces stripped
         return t1 in typeTokens || t2 in typeTokens
     }
@@ -224,20 +225,18 @@ private class Tx3Block(
 
 // ── Code Style Settings ───────────────────────────────────────────────────────
 
-class Tx3LanguageCodeStyleSettingsProvider :
-    LanguageCodeStyleSettingsProvider() {
+class Tx3LanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() {
 
     override fun getLanguage() = Tx3Language
 
-    @Deprecated("Deprecated in Java")
-    override fun getDefaultCommonSettings(): com.intellij.psi.codeStyle.CommonCodeStyleSettings {
-        return com.intellij.psi.codeStyle.CommonCodeStyleSettings(Tx3Language).also { s ->
-            val indent = s.initIndentOptions()
-            indent.INDENT_SIZE = 4
-            indent.TAB_SIZE = 4
-            indent.CONTINUATION_INDENT_SIZE = 4
-            indent.USE_TAB_CHARACTER = false
-        }
+    override fun customizeDefaults(
+        commonSettings: CommonCodeStyleSettings,
+        indentOptions: CommonCodeStyleSettings.IndentOptions
+    ) {
+        indentOptions.INDENT_SIZE = 4
+        indentOptions.TAB_SIZE = 4
+        indentOptions.CONTINUATION_INDENT_SIZE = 4
+        indentOptions.USE_TAB_CHARACTER = false
     }
 
     override fun getCodeSample(settingsType: SettingsType): String = """

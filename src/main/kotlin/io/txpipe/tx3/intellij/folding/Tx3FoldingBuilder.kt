@@ -41,13 +41,55 @@ class Tx3FoldingBuilder : FoldingBuilderEx(), DumbAware {
         PsiTreeUtil.processElements(root) { element ->
             when (element) {
                 is Tx3TxDeclImpl      -> foldBlock(element, descriptors, document, txPlaceholder(element))
-                is Tx3RecordDeclImpl  -> foldBlock(element, descriptors, document, recordPlaceholder(element))
-                is Tx3InputBlockImpl  -> foldBlock(element, descriptors, document, "input ${element.name ?: ""} { … }")
-                is Tx3OutputBlockImpl -> foldBlock(element, descriptors, document, "output ${element.name ?: ""} { … }")
+                is Tx3RecordDeclImpl  -> foldBlock(element, descriptors, document, typePlaceholder("record", element.name, element.fields().size))
+                is Tx3TypeDeclImpl    -> foldBlock(element, descriptors, document, typePlaceholder("type", element.name, element.node.getChildren(null).count { it.elementType == Tx3ElementTypes.RECORD_FIELD || it.elementType == Tx3ElementTypes.VARIANT_CASE }))
+                is Tx3InputBlockImpl    -> foldBlock(element, descriptors, document, "input ${element.name ?: ""} { … }")
+                is Tx3OutputBlockImpl   -> foldBlock(element, descriptors, document, "output ${element.name ?: ""} { … }")
+                is Tx3RecordLiteralImpl -> {
+                    val fieldCount = element.node.getChildren(null)
+                        .count { it.elementType == Tx3ElementTypes.RECORD_FIELD_INIT }
+                    if (fieldCount >= 2) {
+                        val typeName = element.node.firstChildNode?.text ?: "…"
+                        foldBlock(element, descriptors, document, "$typeName { … }")
+                    }
+                }
                 is Tx3PolicyDeclImpl  -> foldPolicyImport(element, descriptors)
                 else -> {
                     val nodeType = element.node.elementType
                     when {
+                        // env { ... } — top-level environment block
+                        nodeType == Tx3ElementTypes.ENV_DECL -> {
+                            flushLineCommentRun()
+                            val count = element.node.getChildren(null).count { it.elementType == Tx3ElementTypes.RECORD_FIELD }
+                            foldBlock(element, descriptors, document, "env { $count field${if (count != 1) "s" else ""} }")
+                        }
+                        // locals { ... } — let-bindings block inside a tx
+                        nodeType == Tx3ElementTypes.LOCALS_BLOCK -> {
+                            flushLineCommentRun()
+                            foldBlock(element, descriptors, document, "locals { … }")
+                        }
+                        // variant cases that have a record body { ... }
+                        nodeType == Tx3ElementTypes.VARIANT_CASE &&
+                            element.node.findChildByType(Tx3TokenTypes.LBRACE) != null -> {
+                            flushLineCommentRun()
+                            val caseName = element.node.firstChildNode?.text ?: "case"
+                            foldBlock(element, descriptors, document, "$caseName { … }")
+                        }
+                        // variant construction expression: TypeName::CaseName { field: val, ... }
+                        nodeType == Tx3ElementTypes.VARIANT_EXPR &&
+                            element.node.findChildByType(Tx3TokenTypes.LBRACE) != null -> {
+                            flushLineCommentRun()
+                            val fieldCount = element.node.getChildren(null)
+                                .count { it.elementType == Tx3ElementTypes.RECORD_FIELD_INIT }
+                            if (fieldCount >= 2) {
+                                val typeName = element.node.firstChildNode?.text ?: ""
+                                val caseName = element.node.getChildren(null)
+                                    .firstOrNull { it.elementType == Tx3TokenTypes.IDENTIFIER }?.text ?: ""
+                                val label = if (typeName.isNotEmpty() && caseName.isNotEmpty())
+                                    "$typeName::$caseName" else typeName.ifEmpty { caseName }
+                                foldBlock(element, descriptors, document, "$label { … }")
+                            }
+                        }
                         // Block comments — fold if multi-line
                         nodeType == Tx3TokenTypes.BLOCK_COMMENT -> {
                             flushLineCommentRun()
@@ -112,10 +154,10 @@ class Tx3FoldingBuilder : FoldingBuilderEx(), DumbAware {
         return "tx $name$params { … }"
     }
 
-    private fun recordPlaceholder(element: Tx3RecordDeclImpl): String {
-        val name = element.name ?: "record"
-        val count = element.fields().size
-        return "record $name { $count field${if (count != 1) "s" else ""} }"
+    private fun typePlaceholder(keyword: String, name: String?, count: Int): String {
+        val label = name ?: keyword
+        return if (count > 0) "$keyword $label { $count field${if (count != 1) "s" else ""} }"
+        else "$keyword $label { … }"
     }
 
     override fun isCollapsedByDefault(node: ASTNode): Boolean = false

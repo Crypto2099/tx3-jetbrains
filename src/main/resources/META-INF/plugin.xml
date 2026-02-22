@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin require-restart="false">
     <id>io.txpipe.tx3</id>
     <name>Tx3 Toolkit</name>
     <vendor url="https://github.com/adamkdean">Adam K. Dean</vendor>

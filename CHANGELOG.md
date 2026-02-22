@@ -13,6 +13,30 @@
   `pluginIcon.svg` for visibility on light IDE themes and the JetBrains
   Marketplace. Added `pluginIcon_dark.svg` (transparent background) for dark IDE
   themes, following the JetBrains dual-icon convention.
+- **Deprecated API removed** — Replaced `getDefaultCommonSettings()` with the
+  `customizeDefaults(commonSettings, indentOptions)` override, eliminating the
+  deprecated API warning from the JetBrains Marketplace auto-verifier. Removed
+  the unused `Tx3CodeStyleSettings` class along with it.
+
+### Added
+
+- **Code folding for `type` declarations** — `type Vote { … }` folds with a
+  field or variant count in the placeholder (e.g. `type Vote { 3 fields }`).
+- **Code folding for `env` blocks** — Top-level `env { … }` blocks now fold with
+  a field count placeholder.
+- **Code folding for `locals` blocks** — `locals { … }` blocks inside `tx`
+  declarations now fold.
+- **Code folding for inline record literals** — Record literals used as field
+  values (e.g., a `datum`) fold when they contain two or more fields, with the
+  type name as the placeholder (e.g. `State { … }`).
+- **Code folding for variant construction expressions** —
+  `TypeName::CaseName { … }` expressions used as `datum` or `redeemer` values
+  fold when they contain two or more fields, with the full qualified name as the
+  placeholder (e.g., `ShipCommand::MoveShip { … }`).
+- **Dynamic plugin loading** — Added `require-restart="false"` to `plugin.xml`
+  so installing and updating the plugin no longer requires an IDE restart. Note:
+  uninstall still requires a restart due to IntelliJ's file type manager being
+  non-dynamic.
 
 ## [1.0.2] — 2026-02-22
 
