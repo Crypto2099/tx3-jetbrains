@@ -1,13 +1,27 @@
 # Tx3 Toolkit — Changelog
 
+## [1.0.3] — 2026-02-22
+
+### Fixed
+
+- **Plugin crash on disable/enable** — `ClassCastException` when toggling the
+  plugin in a live session. The previous fix (1.0.2) used a `try/catch` that
+  could never intercept the error because the JVM enforces parameter type casts
+  at the bytecode level before any method body executes. Fixed properly by
+  switching to `NoSettings`, eliminating classloader serialization entirely.
+- **Plugin icon invisible on light themes** — Added a dark rounded background to
+  `pluginIcon.svg` for visibility on light IDE themes and the JetBrains
+  Marketplace. Added `pluginIcon_dark.svg` (transparent background) for dark IDE
+  themes, following the JetBrains dual-icon convention.
+
 ## [1.0.2] — 2026-02-22
 
 ### Fixed
 
 - **Startup crash** — `ClassCastException` when IntelliJ passes inlay hint
   `Settings` serialized by a previous classloader instance (e.g., after a plugin
-  update or IDE restart without full reinstalling). The provider now falls back to
-  default settings instead of crashing.
+  update or IDE restart without full reinstalling). The provider now falls back
+  to default settings instead of crashing.
 
 ## [1.0.1] - 2026-02-22
 

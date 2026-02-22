@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "io.txpipe"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -72,9 +72,14 @@ tasks {
         sinceBuild.set("233")
         untilBuild.set("253.*")
         changeNotes.set("""
+            <h3>1.0.3</h3>
+            <ul>
+              <li>Fixed ClassCastException crash when disabling/enabling the plugin in a live session by switching to NoSettings, eliminating classloader serialization entirely</li>
+              <li>Fixed plugin icon invisible on light IDE themes; added pluginIcon_dark.svg for dark themes</li>
+            </ul>
             <h3>1.0.2</h3>
             <ul>
-              <li>Fixed ClassCastException crash on startup caused by stale inlay hints settings across classloader instances</li>
+              <li>Attempted fix for ClassCastException caused by stale inlay hint Settings across classloader instances (superseded by 1.0.3)</li>
             </ul>
             <h3>1.0.1</h3>
             <ul>
