@@ -40,7 +40,7 @@ class Tx3NewFileAction : AnAction(), DumbAware {
 
         WriteCommandAction.runWriteCommandAction(project) {
             val file = PsiFileFactory.getInstance(project)
-                .createFileFromText(fileName, Tx3FileType.INSTANCE, content)
+                .createFileFromText(fileName, Tx3FileType, content)
             val added = psiDir.add(file)
             (added as? com.intellij.psi.PsiFile)?.navigate(true)
         }

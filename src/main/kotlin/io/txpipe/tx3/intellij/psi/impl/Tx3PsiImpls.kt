@@ -17,7 +17,7 @@ abstract class Tx3NamedElementBase(node: ASTNode) : ASTWrapperPsiElement(node), 
 
     override fun getNameIdentifier(): PsiElement? {
         // Try a real IDENTIFIER first; fall back to any soft-keyword token that
-        // was accepted in an identifier position (e.g. a param named 'metadata').
+        // was accepted in an identifier position (e.g., a param named 'metadata').
         node.findChildByType(Tx3TokenTypes.IDENTIFIER)?.psi?.let { return it }
         for (child in node.getChildren(null)) {
             if (child.elementType in Tx3TokenTypes.SOFT_KEYWORD_TOKENS) return child.psi
@@ -41,7 +41,7 @@ abstract class Tx3NamedElementBase(node: ASTNode) : ASTWrapperPsiElement(node), 
         val dummyFile = com.intellij.psi.PsiFileFactory.getInstance(project)
             .createFileFromText(
                 "dummy.tx3",
-                io.txpipe.tx3.intellij.Tx3FileType.INSTANCE,
+                io.txpipe.tx3.intellij.Tx3FileType,
                 "party $name;"
             )
         return dummyFile.node.findChildByType(Tx3TokenTypes.IDENTIFIER)
@@ -57,6 +57,7 @@ class Tx3PartyDeclImpl(node: ASTNode) : Tx3NamedElementBase(node) {
 
 class Tx3PolicyDeclImpl(node: ASTNode) : Tx3NamedElementBase(node) {
     override fun toString(): String = "Tx3PolicyDecl($name)"
+
 }
 
 class Tx3TypeDeclImpl(node: ASTNode) : Tx3NamedElementBase(node) {
@@ -155,11 +156,11 @@ class Tx3BlockFieldImpl(node: ASTNode) : ASTWrapperPsiElement(node)
 class Tx3BinaryExprImpl(node: ASTNode) : ASTWrapperPsiElement(node)
 class Tx3UnaryExprImpl(node: ASTNode) : ASTWrapperPsiElement(node)
 
-class Tx3CallExprImpl(node: ASTNode) : ASTWrapperPsiElement(node) {}
+class Tx3CallExprImpl(node: ASTNode) : ASTWrapperPsiElement(node)
 
-class Tx3RecordLiteralImpl(node: ASTNode) : ASTWrapperPsiElement(node) {}
+class Tx3RecordLiteralImpl(node: ASTNode) : ASTWrapperPsiElement(node)
 
-class Tx3RecordFieldInitImpl(node: ASTNode) : ASTWrapperPsiElement(node) {}
+class Tx3RecordFieldInitImpl(node: ASTNode) : ASTWrapperPsiElement(node)
 
 class Tx3NameRefImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
     fun referencedName(): String? = node.firstChildNode?.text

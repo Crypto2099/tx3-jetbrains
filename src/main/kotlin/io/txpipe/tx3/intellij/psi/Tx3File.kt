@@ -16,7 +16,7 @@ import io.txpipe.tx3.intellij.psi.impl.*
 
 class Tx3File(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, Tx3Language) {
 
-    override fun getFileType(): FileType = Tx3FileType.INSTANCE
+    override fun getFileType(): FileType = Tx3FileType
     override fun toString(): String = "Tx3 File"
 
     fun partyDeclarations(): List<Tx3PartyDeclImpl> =
@@ -101,7 +101,7 @@ class Tx3File(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, Tx3Lan
     }
 
     companion object {
-        // Each method needs its own Key so CachedValuesManager stores them under
+        // Each method needs its own "Key" so CachedValuesManager stores them under
         // distinct slots. Using getCachedValue(this) { } without a Key means all
         // calls share the same slot — the first result wins and others return wrong types.
         private val PARTY_KEY  = Key.create<CachedValue<List<Tx3PartyDeclImpl>>>("tx3.party.decls")
