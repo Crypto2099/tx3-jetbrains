@@ -30,11 +30,12 @@ class Tx3Annotator : Annotator {
             // ── Highlight declaration names ───────────────────────────────────
             is Tx3PartyDeclImpl  -> highlightDeclName(element, holder, Tx3SyntaxHighlighter.KEYWORD_DECL)
             is Tx3PolicyDeclImpl -> highlightDeclName(element, holder, Tx3SyntaxHighlighter.KEYWORD_DECL)
+            is Tx3TypeDeclImpl   -> highlightDeclName(element, holder, Tx3SyntaxHighlighter.BUILTIN_TYPE)
             is Tx3RecordDeclImpl -> highlightDeclName(element, holder, Tx3SyntaxHighlighter.BUILTIN_TYPE)
             is Tx3TxDeclImpl     -> highlightDeclName(element, holder, Tx3SyntaxHighlighter.KEYWORD_DECL)
 
             // Soft-keyword-named declarations: recolor as plain identifier so
-            // e.g. a param named 'metadata' doesn't look like the block keyword.
+            // e.g., a param named 'metadata' doesn't look like the block keyword.
             is Tx3TxParamImpl    -> {
                 highlightDeclName(element, holder, Tx3SyntaxHighlighter.IDENTIFIER)
                 checkTrailingComma(element, holder)
@@ -46,6 +47,19 @@ class Tx3Annotator : Annotator {
             is Tx3RecordFieldImpl -> {
                 highlightDeclName(element, holder, Tx3SyntaxHighlighter.IDENTIFIER)
                 checkTrailingComma(element, holder)
+            }
+
+            // ── Re-apply builtin type coloring on type references ───────────────
+            is Tx3TypeRefImpl -> {
+                val firstChild = element.node.firstChildNode?.psi ?: return
+                val key = if (firstChild.node.elementType in Tx3TokenTypes.BUILTIN_TYPES)
+                    Tx3SyntaxHighlighter.BUILTIN_TYPE
+                else
+                    Tx3SyntaxHighlighter.IDENTIFIER
+                holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+                    .range(firstChild.textRange)
+                    .textAttributes(key)
+                    .create()
             }
 
             // ── Validate required block fields ────────────────────────────────
@@ -124,7 +138,7 @@ class Tx3Annotator : Annotator {
 
         // File-level names — cached per modification
         val fileLevelNames = CachedValuesManager.getCachedValue(file) {
-            val names = buildSet<String> {
+            val names = buildSet {
                 file.partyDeclarations().forEach  { it.name?.let { n -> add(n) } }
                 file.policyDeclarations().forEach { it.name?.let { n -> add(n) } }
                 file.recordDeclarations().forEach { it.name?.let { n -> add(n) } }
@@ -142,7 +156,7 @@ class Tx3Annotator : Annotator {
         val containingTx = PsiTreeUtil.getParentOfType(ref, Tx3TxDeclImpl::class.java)
         if (containingTx != null) {
             val txLocalNames = CachedValuesManager.getCachedValue(containingTx) {
-                val names = buildSet<String> {
+                val names = buildSet {
                     containingTx.params().forEach      { it.name?.let { n -> add(n) } }
                     containingTx.inputBlocks().forEach  { it.name?.let { n -> add(n) } }
                     containingTx.outputBlocks().forEach { it.name?.let { n -> add(n) } }
@@ -186,17 +200,17 @@ class Tx3Annotator : Annotator {
      * - TX_PARAM:
      *     comma consumed in the parent loop AFTER mark.done() → comma is a SIBLING
      *
-     * So we check both: last child first, then next sibling.
+     * So we check both: the last child first, then the next sibling.
      */
     private fun checkTrailingComma(element: PsiElement, holder: AnnotationHolder) {
-        // Check last non-whitespace child (covers RECORD_FIELD, BLOCK_FIELD, LET_BINDING, VARIANT_CASE)
+        // Check the last non-whitespace child (covers RECORD_FIELD, BLOCK_FIELD, LET_BINDING, VARIANT_CASE)
         var child = element.node.lastChildNode
         while (child != null && child.elementType == com.intellij.psi.TokenType.WHITE_SPACE) {
             child = child.treePrev
         }
         if (child?.text == ",") return
 
-        // Check next non-whitespace sibling (covers TX_PARAM)
+        // Check the next non-whitespace sibling (covers TX_PARAM)
         var sibling = element.node.treeNext
         while (sibling != null && sibling.elementType == com.intellij.psi.TokenType.WHITE_SPACE) {
             sibling = sibling.treeNext

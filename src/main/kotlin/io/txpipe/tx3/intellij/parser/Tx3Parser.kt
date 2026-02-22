@@ -137,7 +137,7 @@ class Tx3Parser : PsiParser {
             mark.done(if (isLegacyRecord) E.RECORD_DECL else E.TYPE_DECL); return
         }
 
-        // Discriminate: if the first non-whitespace is IDENTIFIER followed by '{' or ',' or '}' → variant
+        // Discriminate: if first non-whitespace is IDENTIFIER followed by '{' or ',' or '}' → variant
         val isVariant = !isLegacyRecord && looksLikeVariantBody(b)
 
         if (isVariant) {
@@ -189,8 +189,8 @@ class Tx3Parser : PsiParser {
     private fun parseEnvDecl(b: PsiBuilder) {
         val mark = b.mark()
         b.advanceLexer() // consume 'env'
-        if (!expect(b, T.LBRACE, "Expected '{'")) { mark.done(E.ENV_DECL); return }
-        parseRecordFieldBlock(b)
+        if (b.tokenType != T.LBRACE) { b.error("Expected '{'"); mark.done(E.ENV_DECL); return }
+        parseRecordFieldBlock(b) // consumes '{' ... '}'
         mark.done(E.ENV_DECL)
     }
 
@@ -539,7 +539,7 @@ class Tx3Parser : PsiParser {
                 mark.done(E.SPREAD_EXPR)
             }
 
-            // Unit or parenthesized expression: ()  or  (expr)
+            // Unit or parenthesised expression: ()  or  (expr)
             b.tokenType == T.LPAREN -> {
                 b.advanceLexer()
                 if (b.tokenType == T.RPAREN) { b.advanceLexer(); return }
