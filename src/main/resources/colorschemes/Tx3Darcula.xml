@@ -1,0 +1,124 @@
+<!-- Tx3 color attributes for the "Darcula" (dark) JetBrains theme -->
+<list>
+    <!-- Declaration keywords: party, policy, record, tx — lavender/violet -->
+    <option name="TX3_KEYWORD_DECL">
+        <value>
+            <option name="FOREGROUND" value="CC7832"/>
+            <option name="FONT_TYPE" value="1"/> <!-- BOLD -->
+        </value>
+    </option>
+
+    <!-- Block keywords: input, output — sky blue -->
+    <option name="TX3_KEYWORD_BLOCK">
+        <value>
+            <option name="FOREGROUND" value="6897BB"/>
+            <option name="FONT_TYPE" value="1"/>
+        </value>
+    </option>
+
+    <!-- Field keywords: from, to, amount, datum — soft purple italic -->
+    <option name="TX3_KEYWORD_FIELD">
+        <value>
+            <option name="FOREGROUND" value="9876AA"/>
+            <option name="FONT_TYPE" value="2"/> <!-- ITALIC -->
+        </value>
+    </option>
+
+    <!-- Control keywords: import, let, if — orange like Darcula standard -->
+    <option name="TX3_KEYWORD_CONTROL">
+        <value>
+            <option name="FOREGROUND" value="CC7832"/>
+            <option name="FONT_TYPE" value="1"/>
+        </value>
+    </option>
+
+    <!-- Built-in types: Int, Bytes — bright green -->
+    <option name="TX3_BUILTIN_TYPE">
+        <value>
+            <option name="FOREGROUND" value="FFC66D"/>
+            <option name="FONT_TYPE" value="1"/>
+        </value>
+    </option>
+
+    <!-- Built-in symbols: Ada, fees — yellow/gold -->
+    <option name="TX3_BUILTIN_SYMBOL">
+        <value>
+            <option name="FOREGROUND" value="E8BF6A"/>
+            <option name="FONT_TYPE" value="1"/>
+        </value>
+    </option>
+
+    <!-- Identifiers -->
+    <option name="TX3_IDENTIFIER">
+        <value>
+            <option name="FOREGROUND" value="A9B7C6"/>
+        </value>
+    </option>
+
+    <!-- Operators -->
+    <option name="TX3_OPERATOR">
+        <value>
+            <option name="FOREGROUND" value="A9B7C6"/>
+        </value>
+    </option>
+
+    <!-- Numbers — cyan blue -->
+    <option name="TX3_NUMBER">
+        <value>
+            <option name="FOREGROUND" value="6897BB"/>
+        </value>
+    </option>
+
+    <!-- Strings — green -->
+    <option name="TX3_STRING">
+        <value>
+            <option name="FOREGROUND" value="6A8759"/>
+        </value>
+    </option>
+
+    <!-- Byte strings — teal -->
+    <option name="TX3_BYTES">
+        <value>
+            <option name="FOREGROUND" value="6AAFAF"/>
+        </value>
+    </option>
+
+    <!-- Comments — grey italic -->
+    <option name="TX3_LINE_COMMENT">
+        <value>
+            <option name="FOREGROUND" value="808080"/>
+            <option name="FONT_TYPE" value="2"/>
+        </value>
+    </option>
+    <option name="TX3_BLOCK_COMMENT">
+        <value>
+            <option name="FOREGROUND" value="808080"/>
+            <option name="FONT_TYPE" value="2"/>
+        </value>
+    </option>
+
+    <!-- Braces -->
+    <option name="TX3_BRACES">
+        <value>
+            <option name="FOREGROUND" value="A9B7C6"/>
+        </value>
+    </option>
+    <option name="TX3_BRACKETS">
+        <value>
+            <option name="FOREGROUND" value="A9B7C6"/>
+        </value>
+    </option>
+    <option name="TX3_PARENS">
+        <value>
+            <option name="FOREGROUND" value="A9B7C6"/>
+        </value>
+    </option>
+
+    <!-- Bad character -->
+    <option name="TX3_BAD_CHARACTER">
+        <value>
+            <option name="FOREGROUND" value="BC3F3C"/>
+            <option name="EFFECT_TYPE" value="2"/>
+        </value>
+    </option>
+</list>

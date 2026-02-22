@@ -1,0 +1,133 @@
+<idea-plugin>
+    <id>io.txpipe.tx3.intellij</id>
+    <name>Tx3 Toolkit</name>
+    <vendor url="https://github.com/crypto2099">Adam K. Dean</vendor>
+    <description><![CDATA[
+        <b>Tx3 Toolkit — JetBrains IDE support for the Tx3 language by TxPipe.</b>
+        <br/><br/>
+        Tx3 is a DSL for describing UTxO protocol interfaces on Cardano.
+        This plugin provides:
+        <ul>
+          <li>🎨 Full syntax highlighting with a custom color scheme</li>
+          <li>✅ Smart code completion (keywords, types, defined symbols)</li>
+          <li>💡 Type-aware inlay hints on inputs and outputs</li>
+          <li>📐 Code folding for <code>tx</code>, <code>record</code>, <code>party</code>, <code>policy</code> blocks</li>
+          <li>🗂️ Structure view &amp; file outliner</li>
+          <li>⚡ Live templates for common Tx3 patterns</li>
+          <li>🚨 Error annotations with quick fixes</li>
+          <li>📁 File icon for <code>.tx3</code> files</li>
+        </ul>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <resource-bundle>Tx3Bundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <!-- ── File Type ──────────────────────────────────────────────────── -->
+        <fileType
+                name="Tx3 File"
+                implementationClass="io.txpipe.tx3.intellij.Tx3FileType"
+                fieldName="INSTANCE"
+                language="Tx3"
+                extensions="tx3"/>
+
+        <!-- ── Language & Parser ─────────────────────────────────────────── -->
+        <lang.parserDefinition
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.parser.Tx3ParserDefinition"/>
+
+        <!-- ── Syntax Highlighting ───────────────────────────────────────── -->
+        <lang.syntaxHighlighterFactory
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.highlighting.Tx3SyntaxHighlighterFactory"/>
+
+
+        <additionalTextAttributes
+                scheme="Default"
+                file="colorschemes/Tx3Default.xml"/>
+
+        <additionalTextAttributes
+                scheme="Darcula"
+                file="colorschemes/Tx3Darcula.xml"/>
+
+        <!-- ── Semantic Annotations (type hints, errors) ─────────────────── -->
+        <annotator
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.highlighting.Tx3Annotator"/>
+
+        <!-- ── Inlay Hints ───────────────────────────────────────────────── -->
+        <codeInsight.inlayProvider
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.hints.Tx3InlayHintsProvider"/>
+
+        <!-- ── Code Completion ───────────────────────────────────────────── -->
+        <completion.contributor
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.completion.Tx3CompletionContributor"/>
+
+        <!-- ── Code Folding ──────────────────────────────────────────────── -->
+        <lang.foldingBuilder
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.folding.Tx3FoldingBuilder"/>
+
+        <!-- ── Structure View ────────────────────────────────────────────── -->
+        <lang.psiStructureViewFactory
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.structure.Tx3StructureViewFactory"/>
+
+        <!-- ── Commenter ─────────────────────────────────────────────────── -->
+        <lang.commenter
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.Tx3Commenter"/>
+
+
+
+        <!-- ── Find Usages ───────────────────────────────────────────────── -->
+        <lang.findUsagesProvider
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.Tx3FindUsagesProvider"/>
+
+        <!-- ── Reference Contributor (go-to-def) ────────────────────────── -->
+        <psi.referenceContributor
+                language="Tx3"
+                implementation="io.txpipe.tx3.intellij.Tx3ReferenceContributor"/>
+
+
+        <!-- ── Live Templates ────────────────────────────────────────────── -->
+        <defaultLiveTemplates file="liveTemplates/Tx3.xml"/>
+        <liveTemplateContext
+                implementation="io.txpipe.tx3.intellij.Tx3TemplateContextType"
+                contextId="TX3"/>
+
+        <!-- ── Formatter ─────────────────────────────────────────────────── -->
+        <lang.formatter
+                language="Tx3"
+                implementationClass="io.txpipe.tx3.intellij.formatting.Tx3FormattingModelBuilder"/>
+
+        <!-- ── Code Style Settings ───────────────────────────────────────── -->
+
+        <langCodeStyleSettingsProvider
+                implementation="io.txpipe.tx3.intellij.formatting.Tx3LanguageCodeStyleSettingsProvider"/>
+
+
+        <!-- ── Typed Handler (auto-close braces) ───────────────────────── -->
+        <typedHandler
+                implementation="io.txpipe.tx3.intellij.Tx3TypedHandler"/>
+
+        <!-- ── Enter Handler ─────────────────────────────────────────────── -->
+        <enterHandlerDelegate
+                implementation="io.txpipe.tx3.intellij.Tx3EnterHandler"/>
+
+    </extensions>
+
+    <actions>
+        <action
+                id="Tx3.NewFile"
+                class="io.txpipe.tx3.intellij.actions.Tx3NewFileAction"
+        >
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
+    </actions>
+</idea-plugin>

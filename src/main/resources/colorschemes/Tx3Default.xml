@@ -1,0 +1,125 @@
+<!-- Tx3 color attributes for the "Default" (light) JetBrains theme -->
+<list>
+    <!-- Declaration keywords: party, policy, record, tx — bold purple -->
+    <option name="TX3_KEYWORD_DECL">
+        <value>
+            <option name="FOREGROUND" value="7B2FBE"/>
+            <option name="FONT_TYPE" value="1"/> <!-- BOLD -->
+        </value>
+    </option>
+
+    <!-- Block keywords: input, output — bold teal -->
+    <option name="TX3_KEYWORD_BLOCK">
+        <value>
+            <option name="FOREGROUND" value="0077AA"/>
+            <option name="FONT_TYPE" value="1"/>
+        </value>
+    </option>
+
+    <!-- Field keywords: from, to, amount, datum, redeemer — steel blue italic -->
+    <option name="TX3_KEYWORD_FIELD">
+        <value>
+            <option name="FOREGROUND" value="267CB9"/>
+            <option name="FONT_TYPE" value="2"/> <!-- ITALIC -->
+        </value>
+    </option>
+
+    <!-- Control keywords: import, let, if, else — standard keyword blue -->
+    <option name="TX3_KEYWORD_CONTROL">
+        <value>
+            <option name="FOREGROUND" value="0033B3"/>
+            <option name="FONT_TYPE" value="1"/>
+        </value>
+    </option>
+
+    <!-- Built-in types: Int, Bytes, UtxoRef — dark green -->
+    <option name="TX3_BUILTIN_TYPE">
+        <value>
+            <option name="FOREGROUND" value="00627A"/>
+            <option name="FONT_TYPE" value="1"/>
+        </value>
+    </option>
+
+    <!-- Built-in symbols: Ada, fees — orange gold -->
+    <option name="TX3_BUILTIN_SYMBOL">
+        <value>
+            <option name="FOREGROUND" value="B05A00"/>
+            <option name="FONT_TYPE" value="1"/>
+        </value>
+    </option>
+
+    <!-- Identifiers — default text color -->
+    <option name="TX3_IDENTIFIER">
+        <value>
+            <option name="FOREGROUND" value="000000"/>
+        </value>
+    </option>
+
+    <!-- Operators — dark grey -->
+    <option name="TX3_OPERATOR">
+        <value>
+            <option name="FOREGROUND" value="4A4A4A"/>
+        </value>
+    </option>
+
+    <!-- Numbers — blue -->
+    <option name="TX3_NUMBER">
+        <value>
+            <option name="FOREGROUND" value="1750EB"/>
+        </value>
+    </option>
+
+    <!-- Strings — dark green -->
+    <option name="TX3_STRING">
+        <value>
+            <option name="FOREGROUND" value="067D17"/>
+        </value>
+    </option>
+
+    <!-- Byte strings — teal (like hex) -->
+    <option name="TX3_BYTES">
+        <value>
+            <option name="FOREGROUND" value="007D7D"/>
+        </value>
+    </option>
+
+    <!-- Comments — grey, italic -->
+    <option name="TX3_LINE_COMMENT">
+        <value>
+            <option name="FOREGROUND" value="8C8C8C"/>
+            <option name="FONT_TYPE" value="2"/>
+        </value>
+    </option>
+    <option name="TX3_BLOCK_COMMENT">
+        <value>
+            <option name="FOREGROUND" value="8C8C8C"/>
+            <option name="FONT_TYPE" value="2"/>
+        </value>
+    </option>
+
+    <!-- Braces/brackets/parens — dark -->
+    <option name="TX3_BRACES">
+        <value>
+            <option name="FOREGROUND" value="1A1A1A"/>
+        </value>
+    </option>
+    <option name="TX3_BRACKETS">
+        <value>
+            <option name="FOREGROUND" value="1A1A1A"/>
+        </value>
+    </option>
+    <option name="TX3_PARENS">
+        <value>
+            <option name="FOREGROUND" value="1A1A1A"/>
+        </value>
+    </option>
+
+    <!-- Bad character — red wavy underline -->
+    <option name="TX3_BAD_CHARACTER">
+        <value>
+            <option name="FOREGROUND" value="FF0000"/>
+            <option name="ERROR_STRIPE_COLOR" value="FF0000"/>
+            <option name="EFFECT_TYPE" value="2"/> <!-- WAVE_UNDERSCORE -->
+        </value>
+    </option>
+</list>

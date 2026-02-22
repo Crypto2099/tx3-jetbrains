@@ -1,0 +1,19 @@
+# Changelog
+
+## [1.0.0] - 2026-02-22
+
+### Added
+- Full syntax highlighting with semantic color tokens for all Tx3 constructs
+- Smart code completion for keywords, builtin types, and user-defined symbols (parties, types, tx params, block names)
+- Type-aware inlay hints on input and output blocks
+- Code folding for `tx`, `type`, `record`, `party`, `policy`, and `env` blocks
+- Structure view and file outliner showing all top-level declarations
+- Error annotations for missing trailing commas with one-click quick fix
+- Live templates for common Tx3 patterns (`tx`, `input`, `output`, `type`, etc.)
+- Built-in "Tx3 Dark" color scheme
+- Auto-closing braces `{}`, brackets `[]`, and parentheses `()`
+- Code formatter with correct indentation for all block types including `policy`, `variant`, and inline record literals
+- "New Tx3 Protocol File" action in the New File menu with Blank, Simple Transfer, and Vesting Contract templates
+- Support for `input*` (wildcard input) syntax
+- Support for all Tx3 block types: `input`, `output`, `mint`, `burn`, `locals`, `collateral`, `reference`, `signers`, `validity`, `metadata`, `cardano::*`
+- Support for variant types, generic types (`List<T>`, `Map<K,V>`), asset literals, and UTXO reference literals
