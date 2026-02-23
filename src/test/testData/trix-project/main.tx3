@@ -181,6 +181,21 @@ tx list_index_test(items: List<Int>) {
     }
 }
 
+tx spread_test(new_balance: Int) {
+    input source {
+        from: Sender,
+        datum_is: LegacyState,
+    }
+    output {
+        to: Sender,
+        amount: Ada(new_balance),
+        datum: LegacyState {
+            balance: new_balance,
+            ...source
+        },
+    }
+}
+
 tx generic_params(items: List<Int>, lookup: Map<Bytes, Int>) {
     output {
         to: Sender,

@@ -76,6 +76,7 @@ class Tx3Annotator : Annotator {
             else -> when (element.node.elementType) {
                 Tx3ElementTypes.BLOCK_FIELD,
                 Tx3ElementTypes.VARIANT_CASE -> checkTrailingComma(element, holder)
+                Tx3ElementTypes.SPREAD_EXPR -> checkSpreadTrailingComma(element, holder)
                 else -> { /* no annotation needed */ }
             }
         }
@@ -223,6 +224,21 @@ class Tx3Annotator : Annotator {
             .range(element.textRange)
             .withFix(Tx3AddTrailingCommaFix(element))
             .create()
+    }
+
+    // ── Spread Trailing Comma Warning ──────────────────────────────────────────
+
+    private fun checkSpreadTrailingComma(element: PsiElement, holder: AnnotationHolder) {
+        var child = element.node.lastChildNode
+        while (child != null && child.elementType == com.intellij.psi.TokenType.WHITE_SPACE) {
+            child = child.treePrev
+        }
+        if (child?.text == ",") {
+            holder.newAnnotation(
+                HighlightSeverity.WARNING,
+                "Trailing comma after spread operator is not supported by the upstream Tx3 compiler"
+            ).range(child!!.textRange).create()
+        }
     }
 
 }

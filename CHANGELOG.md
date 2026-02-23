@@ -19,6 +19,9 @@
   postfix operator alongside field access.
 - **Ternary expressions** — Parser now supports `flag ? a : b` conditional
   expressions with right-associative nesting.
+- **Spread operator trailing comma warning** — A warning is now shown when a
+  trailing comma follows a spread expression (`...source,`) since the upstream
+  `trix` compiler does not accept it.
 
 ### Fixed
 

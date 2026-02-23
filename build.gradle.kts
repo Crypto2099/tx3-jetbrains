@@ -103,6 +103,7 @@ tasks {
               <li>Added parser support for array type suffix (<code>Int[]</code>)</li>
               <li>Added parser support for list indexing (<code>items[0]</code>)</li>
               <li>Added parser support for ternary expressions (<code>flag ? a : b</code>)</li>
+              <li>Added warning annotation for trailing comma after spread operator (<code>...source,</code>)</li>
               <li>Fixed lexer crash (InvalidStateException) during incremental re-lexing by switching from %8bit to %unicode</li>
               <li>Fixed field access on soft keywords (e.g. <code>source.amount</code>) failing after <code>.</code></li>
               <li>Fixed false trailing comma errors on transaction parameter declarations</li>
